@@ -15,12 +15,13 @@ ABaseGun::ABaseGun()
 void ABaseGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	fireInterval = 60.f / rpm;
 }
 
 void ABaseGun::FireWeapon()
 {
-
+	curMagRounds--;
+	isFiring = true;
 }
 
 void ABaseGun::Reload(int pInsertMagazine)
@@ -29,16 +30,17 @@ void ABaseGun::Reload(int pInsertMagazine)
 
 void ABaseGun::SetADS()
 {
+	isAds = true;
 }
 
 void ABaseGun::SetHipfire()
 {
+	isAds = false;
 }
 
 bool ABaseGun::CanFireWeapon() const
 {
-
-	return false;
+	return !isFiring || !isReloading;
 }
 
 // Called every frame
@@ -53,5 +55,15 @@ void ABaseGun::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+bool ABaseGun::IsReloading()
+{
+	return isReloading;
+}
+
+bool ABaseGun::IsFiring()
+{
+	return isFiring;
 }
 

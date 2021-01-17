@@ -49,6 +49,47 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("RotateVertical"), this, &APlayerCharacter::RotateVertical);
 }
 
+bool APlayerCharacter::IsWeaponEquiped()
+{
+	return (currentActiveGun != nullptr);
+}
+
+bool APlayerCharacter::IsAds()
+{
+	return (currentActiveGun && currentActiveGun->isAds);
+}
+
+bool APlayerCharacter::IsWalking()
+{
+	return (!isSprinting && GetVelocity().Size()>0) ;
+}
+
+int APlayerCharacter::GetWeaponCode()
+{
+	
+	return (currentActiveGun)?currentActiveGun->itemCode:-1;
+}
+
+bool APlayerCharacter::IsShotgun()
+{
+	return (currentActiveGun && currentActiveGun->itemCode == 4);
+}
+
+int APlayerCharacter::GetReloadState()
+{
+	return (currentActiveGun && currentActiveGun->itemCode == 4)?currentActiveGun->reloadState : -1;
+}
+
+bool APlayerCharacter::IsSprinting()
+{
+	return (isSprinting && GetVelocity().Size() > 0);
+}
+
+bool APlayerCharacter::IsFiring()
+{
+	return (currentActiveGun && currentActiveGun->isFiring);
+}
+
 void APlayerCharacter::MoveVertical(float pValue)
 {
 	movementSpeed = (isSprinting && pValue >0) ? SPRINTING_SPEED : WALKING_SPEED;

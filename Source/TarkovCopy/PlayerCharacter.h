@@ -59,5 +59,28 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
+
+//BlueprintPureOnly
+protected:
+	UFUNCTION(BlueprintPure)
+    bool IsWeaponEquiped();
+	UFUNCTION(BlueprintPure)
+	bool IsAds();
+	UFUNCTION(BlueprintPure)
+	bool IsFiring();
+	UFUNCTION(BlueprintPure)
+	bool IsSprinting();
+	UFUNCTION(BlueprintPure)
+	bool IsWalking();
+	UFUNCTION(BlueprintPure)
+	int GetWeaponCode();
+
+	//Shotgun only
+	UFUNCTION(BlueprintPure)
+	bool IsShotgun();
+	UFUNCTION(BlueprintPure)
+	int GetReloadState();
+
+
 };

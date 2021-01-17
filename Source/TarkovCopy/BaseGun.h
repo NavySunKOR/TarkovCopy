@@ -21,11 +21,17 @@ protected:
 
 public:	
 	int itemCode;
+	int reloadState; //use for shotgun
+	bool isAds;
 	bool isFiring;
 	bool isReloading;
 	int maximumMagRounds;
 	int curMagRounds;
 	float damage;
+	UPROPERTY(EditAnywhere)
+	float rpm;
+	float fireInterval;
+	float fireTimer;
 
 	virtual bool CanFireWeapon() const;
 	virtual void FireWeapon();
@@ -38,5 +44,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+//BlueprintPures
+protected: 
+	UFUNCTION(BlueprintPure)
+	bool IsReloading();
+	UFUNCTION(BlueprintPure)
+	bool IsFiring();
+
 
 };
