@@ -22,18 +22,25 @@ protected:
 public:	
 	int itemCode;
 	int reloadState; //use for shotgun
-	bool isAds;
-	bool isFiring;
-	bool isReloading;
+	bool isAds = false;
+	bool isFiring = false;
+	bool isReloading = false;
 	int maximumMagRounds;
 	int curMagRounds;
 	float damage;
+	float range;
+	
 	UPROPERTY(EditAnywhere)
 	float rpm;
+	
 	float fireInterval;
-	float fireTimer;
+	float fireTimer = 0.f;
 
-	virtual bool CanFireWeapon() const;
+	float reloadInterval;
+	float reloadTimer = 0.f;
+
+
+	virtual bool CanFireWeapon();
 	virtual void FireWeapon();
 	virtual void Reload(int pInsertMagazine);
 	virtual void SetADS();
