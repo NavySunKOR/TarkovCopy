@@ -10,6 +10,12 @@ UCLASS()
 class TARKOVCOPY_API ABaseGun : public APawn
 {
 	GENERATED_BODY()
+private:
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* root;
+
+	UPROPERTY(VisibleAnywhere)
+	USkeletalMeshComponent* gunMesh;
 
 public:
 	// Sets default values for this pawn's properties
@@ -39,6 +45,14 @@ public:
 	float reloadInterval;
 	float reloadTimer = 0.f;
 
+	UPROPERTY(EditAnywhere)
+	USoundBase* fireSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* reloadSound;
+
+
+
 
 	virtual bool CanFireWeapon();
 	virtual void FireWeapon();
@@ -57,6 +71,11 @@ protected:
 	bool IsReloading();
 	UFUNCTION(BlueprintPure)
 	bool IsFiring();
+
+//TempValues
+protected:
+	int tempInsertMag;
+	
 
 
 };

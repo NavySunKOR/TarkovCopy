@@ -2,13 +2,17 @@
 
 
 #include "BaseGun.h"
+#include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 // Sets default values
 ABaseGun::ABaseGun()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	root = CreateDefaultSubobject<USceneComponent>("Root");
+	SetRootComponent(root);
+	gunMesh = CreateDefaultSubobject<USkeletalMeshComponent>("GunMesh");
+	gunMesh->SetupAttachment(root);
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +27,7 @@ void ABaseGun::FireWeapon()
 {
 	curMagRounds--;
 	isFiring = true;
+	UGameplayStatics::SpawnSoundAttached(fireSound, gunMesh, TEXT("socketMuzzle"));
 }
 
 void ABaseGun::Reload(int pInsertMagazine)
