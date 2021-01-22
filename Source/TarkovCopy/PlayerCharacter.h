@@ -48,6 +48,11 @@ protected:
 	ABaseGun* primaryWeapon;
 	ABaseGun* secondaryWeapon;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ABaseGun> m416Origin;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ABaseGun> m9Origin;
+
 	//TODO: 임시. 인벤토리 기능 추가시 변경 될 예정
 	int ownedPrimaryWeaponAmmo; 
 	int ownedSecondaryWeaponAmmo;
@@ -69,6 +74,8 @@ protected:
 	bool IsAds();
 	UFUNCTION(BlueprintPure)
 	bool IsFiring();
+	UFUNCTION(BlueprintPure)
+	bool IsReloading();
 	UFUNCTION(BlueprintPure)
 	bool IsSprinting();
 	UFUNCTION(BlueprintPure)

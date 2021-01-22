@@ -30,7 +30,25 @@ void AM416::FireWeapon()
 	FCollisionQueryParams param;
 	param.AddIgnoredActor(this);
 	param.AddIgnoredActor(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	GetController()->GetPlayerViewPoint(start, dir);
+	APawn* player = Cast<APawn>(GetOwner());
+	if (player != nullptr)
+	{
+		AController* playCon = player->GetController();
+		if (playCon != nullptr)
+		{
+
+			playCon->GetPlayerViewPoint(start, dir);
+		}
+		else
+		{
+			return;
+		}
+	}
+	else
+	{
+		return;
+	}
+
 	
 	//TODO: 힙파이어냐 아니면 ads냐에 따라서 발사 방식을 다르게 하고, ads에서 발사시 총기는 선형 방식으로 반동을 적용(무기가 위로 올라가야함);
 	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * range, ECollisionChannel::ECC_EngineTraceChannel1, param))
@@ -54,8 +72,7 @@ void AM416::FireWeapon()
 
 void AM416::Reload(int pInsertMagazine)
 {
-	isReloading = true;
-	tempInsertMag = pInsertMagazine;
+	Super::Reload(pInsertMagazine);
 }
 
 void AM416::SetADS()

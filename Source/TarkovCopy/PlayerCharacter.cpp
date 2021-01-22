@@ -18,6 +18,23 @@ void APlayerCharacter::BeginPlay()
 	springArm = FindComponentByClass<USpringArmComponent>();
 
 	originalSpringArmPos = springArm->TargetOffset;
+	USkeletalMeshComponent* armMesh = Cast<USkeletalMeshComponent>(springArm->GetChildComponent(0)->GetChildComponent(0));
+	
+	if (m416Origin)
+	{
+		primaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m416Origin);
+		primaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponHolder"));
+		primaryWeapon->SetOwner(this);
+	}
+
+	if (m9Origin)
+	{
+		secondaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m9Origin);
+		secondaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponHolder"));
+		secondaryWeapon->SetOwner(this);
+	}
+	EquipPrimary();
+
 
 }
 
@@ -90,6 +107,11 @@ bool APlayerCharacter::IsFiring()
 	return (currentActiveGun && currentActiveGun->isFiring);
 }
 
+bool APlayerCharacter::IsReloading()
+{
+	return (currentActiveGun && currentActiveGun->isReloading);
+}
+
 void APlayerCharacter::MoveVertical(float pValue)
 {
 	movementSpeed = (isSprinting && pValue >0) ? SPRINTING_SPEED : WALKING_SPEED;
@@ -135,14 +157,37 @@ void APlayerCharacter::SetStanding()
 
 void APlayerCharacter::EquipPrimary()
 {
-	if(primaryWeapon)
+	if (primaryWeapon)
+	{
+		primaryWeapon->SetActorHiddenInGame(false);
+		primaryWeapon->SetActorEnableCollision(true);
+		primaryWeapon->SetActorTickEnabled(true);
 		currentActiveGun = primaryWeapon;
+	
+		if (secondaryWeapon)
+		{
+			secondaryWeapon->SetActorHiddenInGame(true);
+			secondaryWeapon->SetActorEnableCollision(false);
+			secondaryWeapon->SetActorTickEnabled(false);
+		}
+	}
 }
 
 void APlayerCharacter::EquipSecondary()
 {
-	if(secondaryWeapon)
+	if (secondaryWeapon)
+	{
+		secondaryWeapon->SetActorHiddenInGame(false);
+		secondaryWeapon->SetActorEnableCollision(true);
+		secondaryWeapon->SetActorTickEnabled(true);
 		currentActiveGun = secondaryWeapon;
+		if (primaryWeapon)
+		{
+			primaryWeapon->SetActorHiddenInGame(true);
+			primaryWeapon->SetActorEnableCollision(false);
+			primaryWeapon->SetActorTickEnabled(false);
+		}
+	}
 }
 
 void APlayerCharacter::FireWeapon()

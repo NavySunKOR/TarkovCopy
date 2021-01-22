@@ -32,6 +32,8 @@ void ABaseGun::FireWeapon()
 
 void ABaseGun::Reload(int pInsertMagazine)
 {
+	isReloading = true;
+	tempInsertMag = pInsertMagazine;
 }
 
 void ABaseGun::SetADS()
