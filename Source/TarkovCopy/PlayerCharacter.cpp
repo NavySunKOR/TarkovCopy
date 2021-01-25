@@ -18,20 +18,44 @@ void APlayerCharacter::BeginPlay()
 	springArm = FindComponentByClass<USpringArmComponent>();
 
 	originalSpringArmPos = springArm->TargetOffset;
-	USkeletalMeshComponent* armMesh = Cast<USkeletalMeshComponent>(springArm->GetChildComponent(0)->GetChildComponent(0));
-	
+	TArray <USceneComponent*> childs;
+	springArm->GetChildrenComponents(true, childs);
+	USceneComponent* arm = nullptr;
+	for (USceneComponent* comp : childs)
+	{
+		if (comp->GetName().Equals("FPArms"))
+		{
+			arm = comp;
+			break;
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("arm ? : %d"), arm);
+
+	USkeletalMeshComponent* armMesh = nullptr;
+	if (arm)
+		armMesh = Cast<USkeletalMeshComponent>(arm);
+	else
+		return;
+	UE_LOG(LogTemp, Warning, TEXT("ARM MESH? : %d"), armMesh);
+
+
 	if (m416Origin)
 	{
 		primaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m416Origin);
-		primaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponHolder"));
+		primaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weaponHolder"));
 		primaryWeapon->SetOwner(this);
+		primaryWeapon->SetActorRelativeLocation(primaryWeapon->fppPosition);
+		primaryWeapon->SetActorRelativeRotation(primaryWeapon->fppRotation);
+		primaryWeapon->SetActorRelativeScale3D(primaryWeapon->fppScale);
+		UE_LOG(LogTemp, Warning, TEXT("M416"));
 	}
 
 	if (m9Origin)
 	{
 		secondaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m9Origin);
-		secondaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::KeepRelativeTransform, TEXT("weaponHolder"));
+		secondaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weaponHolder"));
 		secondaryWeapon->SetOwner(this);
+		UE_LOG(LogTemp, Warning, TEXT("M9"));
 	}
 	EquipPrimary();
 

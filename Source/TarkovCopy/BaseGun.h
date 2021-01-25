@@ -17,6 +17,7 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* gunMesh;
 
+
 public:
 	// Sets default values for this pawn's properties
 	ABaseGun();
@@ -35,6 +36,9 @@ public:
 	int curMagRounds;
 	float damage;
 	float range;
+	FVector fppScale;
+	FVector fppPosition;
+	FRotator fppRotation;
 	
 	UPROPERTY(EditAnywhere)
 	float rpm;
