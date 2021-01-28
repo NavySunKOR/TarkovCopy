@@ -15,6 +15,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	ownedPrimaryWeaponAmmo = 180;
 	springArm = FindComponentByClass<USpringArmComponent>();
 
 	originalSpringArmPos = springArm->TargetOffset;
@@ -82,7 +83,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("Fire"), EInputEvent::IE_Pressed, this, &APlayerCharacter::FireWeapon);
 	PlayerInputComponent->BindAction(TEXT("ADS"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SetADSWeapon);
 	PlayerInputComponent->BindAction(TEXT("ADS"), EInputEvent::IE_Released, this, &APlayerCharacter::SetHipfireWeapon);
-	PlayerInputComponent->BindAction(TEXT("Reload"), EInputEvent::IE_Released, this, &APlayerCharacter::ReloadWeapon);
+	PlayerInputComponent->BindAction(TEXT("Reload"), EInputEvent::IE_Pressed, this, &APlayerCharacter::ReloadWeapon);
 
 	PlayerInputComponent->BindAxis(TEXT("MoveVertical"), this, &APlayerCharacter::MoveVertical);
 	PlayerInputComponent->BindAxis(TEXT("MoveHorizontal"), this, &APlayerCharacter::MoveHorizontal);
@@ -113,12 +114,12 @@ int APlayerCharacter::GetWeaponCode()
 
 bool APlayerCharacter::IsShotgun()
 {
-	return (currentActiveGun && currentActiveGun->itemCode == 4);
+	return (currentActiveGun && currentActiveGun->itemCode == 3);
 }
 
 int APlayerCharacter::GetReloadState()
 {
-	return (currentActiveGun && currentActiveGun->itemCode == 4)?currentActiveGun->reloadState : -1;
+	return (currentActiveGun && currentActiveGun->itemCode == 3)?currentActiveGun->reloadState : -1;
 }
 
 bool APlayerCharacter::IsSprinting()
@@ -241,21 +242,12 @@ void APlayerCharacter::ReloadWeapon()
 		int needAmmo = currentActiveGun->maximumMagRounds - currentActiveGun->curMagRounds;
 
 		//TODO: 체크 로직은 인벤토리가 추가되면 바로 바뀔 것
-		if (currentActiveGun == primaryWeapon)
+		//needAmmo가 현재 보유 수보다 같거나 적고 현재 발사가 가능한 상태이면서 재장전 중이 아니면 재장전 아니면 빠꾸
+		UE_LOG(LogTemp, Warning, TEXT("Reload"));
+		if (needAmmo <= ownedPrimaryWeaponAmmo && !currentActiveGun->isReloading)
 		{
-			//needAmmo가 현재 보유 수보다 같거나 적고 현재 발사가 가능한 상태이면서 재장전 중이 아니면 재장전 아니면 빠꾸
-			if (needAmmo <= ownedPrimaryWeaponAmmo && currentActiveGun->CanFireWeapon() && !currentActiveGun->isReloading)
-			{
-				currentActiveGun->Reload(needAmmo);
-			}
-		}
-		else
-		{
-			//needAmmo가 현재 보유 수보다 같거나 적고 현재 발사가 가능한 상태이면서 재장전 중이 아니면 재장전 아니면 빠꾸
-			if (needAmmo <= ownedSecondaryWeaponAmmo && currentActiveGun->CanFireWeapon() && !currentActiveGun->isReloading)
-			{
-				currentActiveGun->Reload(needAmmo);
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Reload Actual"));
+			currentActiveGun->Reload(needAmmo);
 		}
 	}
 }

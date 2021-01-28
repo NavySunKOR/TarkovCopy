@@ -7,14 +7,15 @@
 
 void AM416::BeginPlay()
 {
-	itemCode = 5;
+	itemCode = 4;
 	maximumMagRounds = 30;
+	reloadInterval = 5.f;
 	rpm = 750.f;
 	damage = 25.f;
 	range = 300.f;
 	fppScale = FVector(1.25f,1.25f, 1.25f);
-	fppRotation = FRotator(-2.f, 80.f, 0.f);
-	fppPosition = FVector(-5.6f, 4.95f, -3.2f);
+	fppRotation = FRotator(3.f, 90.f, 15.f);
+	fppPosition = FVector(-5.6f, 4.0f, -3.2f);
 	Super::BeginPlay();
 
 }

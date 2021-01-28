@@ -49,7 +49,7 @@ void ABaseGun::SetHipfire()
 //오버라이드 가능성 : 샷건(한발씩 장전되는데 바로 쏴야하므로
 bool ABaseGun::CanFireWeapon()
 {
-	return (!isFiring || !isReloading) && curMagRounds > 0;
+	return (!isFiring && !isReloading) && curMagRounds > 0;
 }
 
 // Called every frame
