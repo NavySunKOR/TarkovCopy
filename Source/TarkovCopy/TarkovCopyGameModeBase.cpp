@@ -3,3 +3,12 @@
 
 #include "TarkovCopyGameModeBase.h"
 
+void ATarkovCopyGameModeBase :: QuestCompleted(AInteractableObject* questItem)
+{
+
+}
+
+void ATarkovCopyGameModeBase::TryExfil()
+{
+
+}

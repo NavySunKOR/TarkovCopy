@@ -23,9 +23,6 @@ public:
 	virtual void SetADS() override;
 	virtual void SetHipfire() override;
 	virtual void Tick(float DeltaTime) override;
-private:
-	UPROPERTY(EditAnywhere)
-	UParticleSystem* hitTerrain;
 
 
 };

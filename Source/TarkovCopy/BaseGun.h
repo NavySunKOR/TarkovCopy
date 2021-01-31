@@ -76,10 +76,12 @@ protected:
 	UFUNCTION(BlueprintPure)
 	bool IsFiring();
 
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* hitTerrain;
+
 //TempValues
 protected:
 	int tempInsertMag;
-	
 
 
 };

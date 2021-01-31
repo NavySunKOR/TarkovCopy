@@ -20,5 +20,10 @@ private:
 
 public:
 	virtual void PlayerTick(float DeltaTime);
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> crosshairWidget;
+	UPROPERTY(EditAnywhere)
+	UUserWidget* crosshair;
+
 
 };

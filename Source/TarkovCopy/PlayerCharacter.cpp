@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include <GameFramework/CharacterMovementComponent.h>
+#include "InteractableObject.h"
 #include "PlayerCharacter.h"
 
 // Sets default values
@@ -15,7 +16,9 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GetCharacterMovement()->MaxWalkSpeed = walkingSpeed;
 	ownedPrimaryWeaponAmmo = 180;
+	ownedSecondaryWeaponAmmo = 60;
 	springArm = FindComponentByClass<USpringArmComponent>();
 
 	originalSpringArmPos = springArm->TargetOffset;
@@ -56,6 +59,9 @@ void APlayerCharacter::BeginPlay()
 		secondaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m9Origin);
 		secondaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weaponHolder"));
 		secondaryWeapon->SetOwner(this);
+		secondaryWeapon->SetActorRelativeLocation(secondaryWeapon->fppPosition);
+		secondaryWeapon->SetActorRelativeRotation(secondaryWeapon->fppRotation);
+		secondaryWeapon->SetActorRelativeScale3D(secondaryWeapon->fppScale);
 		UE_LOG(LogTemp, Warning, TEXT("M9"));
 	}
 	EquipPrimary();
@@ -84,6 +90,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("ADS"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SetADSWeapon);
 	PlayerInputComponent->BindAction(TEXT("ADS"), EInputEvent::IE_Released, this, &APlayerCharacter::SetHipfireWeapon);
 	PlayerInputComponent->BindAction(TEXT("Reload"), EInputEvent::IE_Pressed, this, &APlayerCharacter::ReloadWeapon);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SetCrouch);
+	PlayerInputComponent->BindAction(TEXT("Crouch"), EInputEvent::IE_Released, this, &APlayerCharacter::SetStanding);
+	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &APlayerCharacter::Interact);
 
 	PlayerInputComponent->BindAxis(TEXT("MoveVertical"), this, &APlayerCharacter::MoveVertical);
 	PlayerInputComponent->BindAxis(TEXT("MoveHorizontal"), this, &APlayerCharacter::MoveHorizontal);
@@ -139,13 +148,12 @@ bool APlayerCharacter::IsReloading()
 
 void APlayerCharacter::MoveVertical(float pValue)
 {
-	movementSpeed = (isSprinting && pValue >0) ? SPRINTING_SPEED : WALKING_SPEED;
-	AddMovementInput(GetActorForwardVector() *movementSpeed * pValue * deltaTime);
+	AddMovementInput(GetActorForwardVector() * 50.f * pValue * deltaTime);
 }
 
 void APlayerCharacter::MoveHorizontal(float pValue)
 {
-	AddMovementInput(GetActorRightVector() *WALKING_SPEED * pValue * deltaTime);
+	AddMovementInput(GetActorRightVector() * 50.f * pValue * deltaTime);
 }
 
 void APlayerCharacter::RotateHorizontal(float pValue)
@@ -160,23 +168,34 @@ void APlayerCharacter::RotateVertical(float pValue)
 
 void APlayerCharacter::SetSprinting()
 {
-	isSprinting = true;
+	if (!isCrouch)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = sprintingSpeed;
+		isSprinting = true;
+	}
 }
 
 void APlayerCharacter::SetWalking()
 {
+	GetCharacterMovement()->MaxWalkSpeed = walkingSpeed;
 	isSprinting = false;
 }
 
 void APlayerCharacter::SetCrouch()
 {
-	springArm->TargetOffset = originalSpringArmPos - FVector(0, 0, 50.f);
+	if (IsSprinting())
+	{
+		SetWalking();
+	}
+	Crouch();
+	//springArm->TargetOffset = originalSpringArmPos - FVector(0, 0, 500.f);
 	isCrouch = true;
 }
 
 void APlayerCharacter::SetStanding()
 {
-	springArm->TargetOffset = originalSpringArmPos;
+	UnCrouch();
+	//springArm->TargetOffset = originalSpringArmPos;
 	isCrouch = false;
 }
 
@@ -240,14 +259,47 @@ void APlayerCharacter::ReloadWeapon()
 	if (currentActiveGun)
 	{
 		int needAmmo = currentActiveGun->maximumMagRounds - currentActiveGun->curMagRounds;
+		int ownedAmmo = (currentActiveGun == primaryWeapon) ? ownedPrimaryWeaponAmmo : ownedSecondaryWeaponAmmo;
 
 		//TODO: 체크 로직은 인벤토리가 추가되면 바로 바뀔 것
 		//needAmmo가 현재 보유 수보다 같거나 적고 현재 발사가 가능한 상태이면서 재장전 중이 아니면 재장전 아니면 빠꾸
 		UE_LOG(LogTemp, Warning, TEXT("Reload"));
-		if (needAmmo <= ownedPrimaryWeaponAmmo && !currentActiveGun->isReloading)
+		if (needAmmo > 0 && needAmmo <= ownedAmmo && !currentActiveGun->isReloading)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Reload Actual"));
 			currentActiveGun->Reload(needAmmo);
+			if (currentActiveGun == primaryWeapon)
+			{
+				ownedPrimaryWeaponAmmo -= needAmmo;
+			}
+			else
+			{
+				ownedSecondaryWeaponAmmo -= needAmmo;
+			}
+		}
+	}
+}
+
+void APlayerCharacter::Interact()
+{
+	FHitResult hit;
+	FVector start;
+	FRotator dir;
+	FCollisionQueryParams param;
+	param.AddIgnoredActor(this);
+
+	APlayerController* con = Cast<APlayerController>(GetController());
+	if (con == nullptr)
+		return;
+	con->GetPlayerViewPoint(start, dir);
+
+	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * 500.f, ECollisionChannel::ECC_Pawn, param))
+	{
+		AInteractableObject* inter = Cast<AInteractableObject>(hit.GetActor());
+		if (inter != nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Interacting"));
+			inter->Interact();
 		}
 	}
 }

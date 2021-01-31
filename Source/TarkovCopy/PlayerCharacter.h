@@ -7,8 +7,6 @@
 #include <GameFramework/SpringArmComponent.h>
 #include <TarkovCopy/BaseGun.h>
 #include "PlayerCharacter.generated.h"
-#define SPRINTING_SPEED 400.f
-#define WALKING_SPEED 100.f
 
 UCLASS()
 class TARKOVCOPY_API APlayerCharacter : public ACharacter
@@ -23,7 +21,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	float deltaTime = 0.f;
-	float movementSpeed = WALKING_SPEED;
 	USpringArmComponent* springArm;
 	FVector originalSpringArmPos;
 	bool isSprinting = false;
@@ -44,6 +41,10 @@ protected:
 	void SetHipfireWeapon();
 	void ReloadWeapon();
 
+	void Interact();
+
+
+
 	ABaseGun* currentActiveGun;
 	ABaseGun* primaryWeapon;
 	ABaseGun* secondaryWeapon;
@@ -52,6 +53,11 @@ protected:
 	TSubclassOf<ABaseGun> m416Origin;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ABaseGun> m9Origin;
+
+	UPROPERTY(EditAnywhere)
+	float sprintingSpeed;
+	UPROPERTY(EditAnywhere)
+	float walkingSpeed;
 
 	//TODO: 임시. 인벤토리 기능 추가시 변경 될 예정
 	int ownedPrimaryWeaponAmmo; 
