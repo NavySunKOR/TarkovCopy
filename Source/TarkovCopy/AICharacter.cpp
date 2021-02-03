@@ -15,6 +15,7 @@ AAICharacter::AAICharacter()
 void AAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	curHp = maxHp;
 	
 }
 

@@ -29,7 +29,9 @@ void AFPPlayerController::BeginPlay()
 	range = Cast<UTextBlock>(alertHud->GetWidgetFromName(TEXT("Range")));
 	exfilTimer = Cast<UTextBlock>(exfilAlert->GetWidgetFromName(TEXT("ExfilTimer")));
 
-	GetWorld()->GetAuthGameMode<AEscapeGameMode>()->SelectQuestItems();
+	AEscapeGameMode* gameMode = GetWorld()->GetAuthGameMode<AEscapeGameMode>();
+	if(gameMode)
+		gameMode->SelectQuestItems();
 }
 
 void AFPPlayerController::SetupInputComponent()
