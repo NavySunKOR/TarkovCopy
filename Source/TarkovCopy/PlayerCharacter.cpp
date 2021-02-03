@@ -293,7 +293,7 @@ void APlayerCharacter::Interact()
 		return;
 	con->GetPlayerViewPoint(start, dir);
 
-	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * 500.f, ECollisionChannel::ECC_Pawn, param))
+	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * 800.f, ECollisionChannel::ECC_Pawn, param))
 	{
 		AInteractableObject* inter = Cast<AInteractableObject>(hit.GetActor());
 		if (inter != nullptr)

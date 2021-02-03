@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "TarkovCopyGameModeBase.h"
 #include "TarkovCopy/QuestItem.h"
+#include <TarkovCopy/FPPlayerController.h>
 #include "EscapeGameMode.generated.h"
 
 /**
@@ -16,19 +17,26 @@ class TARKOVCOPY_API AEscapeGameMode : public ATarkovCopyGameModeBase
 	GENERATED_BODY()
 
 private:
+	//Quest
 	TArray<AQuestItem*> allQuestItems;
-
-	UPROPERTY(EditAnywhere)
 	AQuestItem* activeQuestItem;
-
 	bool isQuestCompleted = false;
 
+	//Exfil
+	TArray<AActor*> allExfilPoints;
+	AActor* activeExfilPoint;
 
-	void SelectQuestItems();
-	void SelectExfilPoint();
+
+	AFPPlayerController* playerCon;
+
+
 
 public:
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+	void SelectQuestItems();
+	void SelectExfilPoint();
+	virtual void StartPlay() override;
 	virtual void QuestCompleted(AInteractableObject* questItem) override;
 	virtual void TryExfil() override;
+	virtual void CancelExfil() override;
+	
 };

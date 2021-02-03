@@ -18,5 +18,6 @@ class TARKOVCOPY_API ATarkovCopyGameModeBase : public AGameModeBase
 public:
 	virtual void QuestCompleted(AInteractableObject* questItem);
 	virtual void TryExfil();
+	virtual void CancelExfil();
 
 };

@@ -12,3 +12,8 @@ void ATarkovCopyGameModeBase::TryExfil()
 {
 
 }
+
+void ATarkovCopyGameModeBase::CancelExfil()
+{
+
+}
