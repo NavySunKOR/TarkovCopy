@@ -100,6 +100,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("RotateVertical"), this, &APlayerCharacter::RotateVertical);
 }
 
+void APlayerCharacter::TakeHit(float damage)
+{
+
+}
+
 bool APlayerCharacter::IsWeaponEquiped()
 {
 	return (currentActiveGun != nullptr);

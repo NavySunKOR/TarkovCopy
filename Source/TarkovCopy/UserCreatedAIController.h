@@ -14,9 +14,12 @@ class TARKOVCOPY_API AUserCreatedAIController : public AAIController
 {
 	GENERATED_BODY()
 
+
 protected:
 	virtual void BeginPlay() override;
 public:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* blackboardTree;
+
+
 };

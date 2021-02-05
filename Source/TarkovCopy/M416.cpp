@@ -61,6 +61,7 @@ void AM416::FireWeapon()
 		AAICharacter* aiCharacter = Cast<AAICharacter>(hit.GetActor());
 		if (aiCharacter != nullptr)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("NAME : %s"), *aiCharacter->GetName());
 			aiCharacter->TookDamage(damage, hit);
 		}
 		//아니면 지형처리.

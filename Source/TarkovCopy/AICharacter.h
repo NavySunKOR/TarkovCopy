@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <Components/SphereComponent.h>
 #include "AICharacter.generated.h"
 
 UCLASS()
@@ -29,4 +30,17 @@ public:
 private:
 	float maxHp = 100.f;
 	float curHp;
+
+	USphereComponent* detectTrigger;
+
+	virtual void NotifyActorBeginOverlap(AActor* Other) override;
+	virtual void NotifyActorEndOverlap(AActor* Other) override;
+
+public:
+	FVector outPlayerLocation;
+	bool outIsPlayerDetected = false;
+	AActor* targetActor;
+
+
+	void FireWeapon();
 };
