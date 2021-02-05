@@ -55,6 +55,12 @@ protected:
 	TSubclassOf<ABaseGun> m9Origin;
 
 	UPROPERTY(EditAnywhere)
+	int maxHp = 100;
+	UPROPERTY(EditAnywhere)
+	int curHp;
+
+
+	UPROPERTY(EditAnywhere)
 	float sprintingSpeed;
 	UPROPERTY(EditAnywhere)
 	float walkingSpeed;

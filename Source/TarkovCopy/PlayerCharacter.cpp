@@ -19,6 +19,8 @@ void APlayerCharacter::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = walkingSpeed;
 	ownedPrimaryWeaponAmmo = 180;
 	ownedSecondaryWeaponAmmo = 60;
+	curHp = maxHp;
+
 	springArm = FindComponentByClass<USpringArmComponent>();
 
 	originalSpringArmPos = springArm->TargetOffset;
@@ -102,7 +104,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::TakeHit(float damage)
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("Hag"));
+	curHp -= damage;
+	if (curHp <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Dead"));
+		curHp = 0.f;
+	}
 }
 
 bool APlayerCharacter::IsWeaponEquiped()

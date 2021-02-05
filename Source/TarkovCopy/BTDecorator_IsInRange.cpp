@@ -19,10 +19,7 @@ bool UBTDecorator_IsInRange::CalculateRawConditionValue(UBehaviorTreeComponent& 
 	FVector startPos = owner->GetActorLocation();
 	FVector dir = owner->outPlayerLocation -  owner->GetActorLocation();
 	FHitResult hit;
-	FName TraceTag("MyTraceTag");
-	GetWorld()->DebugDrawTraceTag = TraceTag;
 	FCollisionQueryParams CollisionParams;
-	CollisionParams.TraceTag = TraceTag;
 	CollisionParams.AddIgnoredActor(owner);
 
 	if (!owner->outIsPlayerDetected)

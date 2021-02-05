@@ -17,6 +17,7 @@ EBTNodeResult::Type UBTTask_FireAtEnemy::ExecuteTask(UBehaviorTreeComponent& Own
 	{
 		return EBTNodeResult::Failed;
 	}
+	aiCharacter->FireWeapon();
 
 	return EBTNodeResult::Succeeded;
 }

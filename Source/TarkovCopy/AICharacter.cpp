@@ -77,17 +77,26 @@ void AAICharacter::FireWeapon()
 	FVector dir = (targetActor->GetActorLocation() - GetActorLocation());
 	FHitResult hit;
 	dir.Normalize();
+
+	FName chip("MyChip");
+	GetWorld()->DebugDrawTraceTag = chip;
 	FCollisionQueryParams param;
 	param.AddIgnoredActor(this);
+	param.TraceTag = chip;
 
-	if (GetWorld()->LineTraceSingleByChannel(hit, start, dir * 15000.f, ECollisionChannel::ECC_Pawn, param))
+
+	UE_LOG(LogTemp, Warning, TEXT("Firing"));
+
+	if (GetWorld()->LineTraceSingleByChannel(hit, start, dir * 150000.f, ECollisionChannel::ECC_Pawn, param))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Firing and hit"));
 		if (hit.Actor->ActorHasTag("Player"))
 		{
 			APlayerCharacter* playerChar = Cast<APlayerCharacter>(hit.Actor);
 			if (playerChar != nullptr)
 			{
 				//TODO:데미지 모델 변경에 따라 변경해줄것
+				UE_LOG(LogTemp, Warning, TEXT("FireAtWill"));
 				playerChar->TakeHit(35.f);
 			}
 		}
