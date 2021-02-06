@@ -18,7 +18,7 @@ protected:
 	virtual void BeginPlay() override;
 public:
 	virtual bool CanFireWeapon() override;
-	virtual void FireWeapon() override;
+	virtual void FireWeapon(FVector start, FRotator dir) override;
 	virtual void Reload(int pInsertMagazine) override;
 	virtual void SetADS() override;
 	virtual void SetHipfire() override;

@@ -50,9 +50,9 @@ void APlayerCharacter::BeginPlay()
 		primaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m416Origin);
 		primaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weaponHolder"));
 		primaryWeapon->SetOwner(this);
-		primaryWeapon->SetActorRelativeLocation(primaryWeapon->fppPosition);
-		primaryWeapon->SetActorRelativeRotation(primaryWeapon->fppRotation);
-		primaryWeapon->SetActorRelativeScale3D(primaryWeapon->fppScale);
+		primaryWeapon->SetActorRelativeLocation(primaryWeapon->playerPosition);
+		primaryWeapon->SetActorRelativeRotation(primaryWeapon->playerRotation);
+		primaryWeapon->SetActorRelativeScale3D(primaryWeapon->playerScale);
 		UE_LOG(LogTemp, Warning, TEXT("M416"));
 	}
 
@@ -61,9 +61,9 @@ void APlayerCharacter::BeginPlay()
 		secondaryWeapon = GetWorld()->SpawnActor<ABaseGun>(m9Origin);
 		secondaryWeapon->AttachToComponent(armMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("weaponHolder"));
 		secondaryWeapon->SetOwner(this);
-		secondaryWeapon->SetActorRelativeLocation(secondaryWeapon->fppPosition);
-		secondaryWeapon->SetActorRelativeRotation(secondaryWeapon->fppRotation);
-		secondaryWeapon->SetActorRelativeScale3D(secondaryWeapon->fppScale);
+		secondaryWeapon->SetActorRelativeLocation(secondaryWeapon->playerPosition);
+		secondaryWeapon->SetActorRelativeRotation(secondaryWeapon->playerRotation);
+		secondaryWeapon->SetActorRelativeScale3D(secondaryWeapon->playerScale);
 		UE_LOG(LogTemp, Warning, TEXT("M9"));
 	}
 	EquipPrimary();
@@ -102,7 +102,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("RotateVertical"), this, &APlayerCharacter::RotateVertical);
 }
 
-void APlayerCharacter::TakeHit(float damage)
+void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Hag"));
 	curHp -= damage;
@@ -251,7 +251,10 @@ void APlayerCharacter::FireWeapon()
 {
 	if (currentActiveGun && currentActiveGun->CanFireWeapon())
 	{
-		currentActiveGun->FireWeapon();
+		FVector start;
+		FRotator dir;
+		GetController()->GetPlayerViewPoint(start, dir);
+		currentActiveGun->FireWeapon(start,dir);
 	}
 }
 

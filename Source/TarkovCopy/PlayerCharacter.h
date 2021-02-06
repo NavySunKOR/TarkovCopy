@@ -77,7 +77,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void TakeHit(float damage);
+	void TookDamage(float damage, FHitResult pHitParts);
 
 
 //BlueprintPureOnly

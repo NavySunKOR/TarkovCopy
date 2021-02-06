@@ -13,9 +13,9 @@ void AM9::BeginPlay()
 	rpm = 55.f;
 	damage = 15.f;
 	range = 15000.f;
-	fppScale = FVector(1.25f, 1.25f, 1.25f);
-	fppRotation = FRotator(4.f, 77.f, 11.f);
-	fppPosition = FVector(-10.f, 3.4f, -3.5f);
+	playerScale = FVector(1.25f, 1.25f, 1.25f);
+	playerRotation = FRotator(4.f, 77.f, 11.f);
+	playerPosition = FVector(-10.f, 3.4f, -3.5f);
 	Super::BeginPlay();
 }
 
@@ -24,33 +24,13 @@ bool AM9::CanFireWeapon()
 	return Super::CanFireWeapon();
 }
 
-void AM9::FireWeapon()
+void AM9::FireWeapon(FVector start, FRotator dir)
 {
 	FHitResult hit;
-	FVector start;
-	FRotator dir;
 	FCollisionQueryParams param;
 	param.AddIgnoredActor(this);
-	param.AddIgnoredActor(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	APawn* player = Cast<APawn>(GetOwner());
-	if (player != nullptr)
-	{
-		AController* playCon = player->GetController();
-		if (playCon != nullptr)
-		{
-
-			playCon->GetPlayerViewPoint(start, dir);
-		}
-		else
-		{
-			return;
-		}
-	}
-	else
-	{
-		return;
-	}
-
+	param.AddIgnoredActor(player);
 
 	//TODO: 힙파이어냐 아니면 ads냐에 따라서 발사 방식을 다르게 하고, ads에서 발사시 총기는 선형 방식으로 반동을 적용(무기가 위로 올라가야함);
 	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * range, ECollisionChannel::ECC_Pawn, param))
@@ -68,7 +48,7 @@ void AM9::FireWeapon()
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), hitTerrain, hit.ImpactPoint, dir, true);
 		}
 	}
-	Super::FireWeapon();
+	Super::FireWeapon(start,dir);
 }
 
 void AM9::Reload(int pInsertMagazine)

@@ -13,7 +13,7 @@ bool ANova::CanFireWeapon()
     return false;
 }
 
-void ANova::FireWeapon()
+void ANova::FireWeapon(FVector start, FRotator dir)
 {
 }
 

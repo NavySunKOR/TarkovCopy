@@ -23,7 +23,7 @@ void ABaseGun::BeginPlay()
 	curMagRounds = maximumMagRounds;
 }
 
-void ABaseGun::FireWeapon()
+void ABaseGun::FireWeapon(FVector start, FRotator dir)
 {
 	curMagRounds--;
 	isFiring = true;

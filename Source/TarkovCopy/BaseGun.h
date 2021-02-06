@@ -36,9 +36,9 @@ public:
 	int curMagRounds;
 	float damage;
 	float range;
-	FVector fppScale;
-	FVector fppPosition;
-	FRotator fppRotation;
+	FVector playerScale;
+	FVector playerPosition;
+	FRotator playerRotation;
 	
 	UPROPERTY(EditAnywhere)
 	float rpm;
@@ -59,7 +59,7 @@ public:
 
 
 	virtual bool CanFireWeapon();
-	virtual void FireWeapon();
+	virtual void FireWeapon(FVector start, FRotator dir);
 	virtual void Reload(int pInsertMagazine);
 	virtual void SetADS();
 	virtual void SetHipfire();

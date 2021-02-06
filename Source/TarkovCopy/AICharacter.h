@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <Components/SphereComponent.h>
+#include <TarkovCopy/BaseGun.h>
 #include "AICharacter.generated.h"
 
 UCLASS()
@@ -32,10 +33,10 @@ private:
 	float curHp;
 
 	USphereComponent* detectTrigger;
+	ABaseGun* currentActiveGun;
 
 	virtual void NotifyActorBeginOverlap(AActor* Other) override;
 	virtual void NotifyActorEndOverlap(AActor* Other) override;
-
 public:
 	FVector outPlayerLocation;
 	bool outIsPlayerDetected = false;
