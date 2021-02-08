@@ -113,6 +113,11 @@ void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 	}
 }
 
+void APlayerCharacter::PickupItem(ItemInfo pItemInfo)
+{
+	inventory.AddItemToInventory(pItemInfo);
+}
+
 bool APlayerCharacter::IsWeaponEquiped()
 {
 	return (currentActiveGun != nullptr);

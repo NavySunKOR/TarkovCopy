@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <GameFramework/SpringArmComponent.h>
+#include <TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h>
+#include <TarkovCopy/InventoryAndItem/GameFunctions/Inventory.h>
 #include <TarkovCopy/Weapons/BaseGun.h>
 #include "PlayerCharacter.generated.h"
 
@@ -69,6 +71,8 @@ protected:
 	int ownedPrimaryWeaponAmmo; 
 	int ownedSecondaryWeaponAmmo;
 
+	Inventory inventory;
+
 
 public:	
 	// Called every frame
@@ -78,6 +82,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void TookDamage(float damage, FHitResult pHitParts);
+
+	void PickupItem(ItemInfo pItemInfo);
 
 
 //BlueprintPureOnly

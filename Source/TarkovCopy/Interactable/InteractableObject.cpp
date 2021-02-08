@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include <Kismet/GameplayStatics.h>
+#include <TarkovCopy/Player/Character/PlayerCharacter.h>
 #include "InteractableObject.h"
 
 // Sets default values for this component's properties
@@ -20,6 +21,7 @@ void AInteractableObject::BeginPlay()
 
 	// ...
 	Super::BeginPlay();
+	playerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
 
@@ -33,6 +35,6 @@ void AInteractableObject::Tick(float DeltaTime)
 
 void AInteractableObject::Interact()
 {
-
+	
 }
 

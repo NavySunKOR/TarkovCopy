@@ -8,4 +8,5 @@ void AQuestItem::Interact()
 {
 	Super::Interact();
 	GetWorld()->GetAuthGameMode<AEscapeGameMode>()->QuestCompleted(this);
+	Destroy();
 }

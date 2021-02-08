@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <TarkovCopy/Player/Character/PlayerCharacter.h>
 #include "InteractableObject.generated.h"
 
 
@@ -18,6 +19,8 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	APlayerCharacter* playerCharacter;
 
 public:	
 	// Called every frame
