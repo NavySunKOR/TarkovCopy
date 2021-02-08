@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "TarkovCopy/Interactable/InteractableObject.h"
-#include <TarkovCopy/Weapons/BaseGun.h>
+#include "TarkovCopy/Weapons/BaseGun.h"
+#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
 #include "TarkovCopyGameModeBase.generated.h"
 
 /**
@@ -23,5 +24,8 @@ public:
 	virtual void QuestCompleted(AInteractableObject* questItem);
 	virtual void TryExfil();
 	virtual void CancelExfil();
+
+	UPROPERTY(EditAnywhere)
+	UItemInfo* itemM416;
 
 };

@@ -3,25 +3,32 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include "ItemInfo.generated.h"
 
 /**
  * 
  */
-class TARKOVCOPY_API ItemInfo
+UCLASS()
+class TARKOVCOPY_API UItemInfo : public UObject
 {
+	GENERATED_BODY()
 public:
-	ItemInfo();
-	virtual ~ItemInfo();
+	//UItemInfo();
+	//UItemInfo(float leftPos, float topPos, float width, float height);
+	//virtual ~UItemInfo();
 
-	int leftPos;
-	int topPos;
-	int widthX;
-	int widthY;
-
-	int maxCapacity;
-	int currentCapacity;
-	UTexture* spriteToUse;
-	USkeletalMesh* meshToDrop;
+	FSlateRect rect;
+	UPROPERTY(EditAnywhere)
+		int maxCapacity;
+	UPROPERTY(EditAnywhere)
+		int currentCapacity;
+	UPROPERTY(EditAnywhere)
+		UTexture* spriteToUse;
+	UPROPERTY(EditAnywhere)
+		USkeletalMesh* meshToDrop;
 
 	virtual void Use();
+
+
 };

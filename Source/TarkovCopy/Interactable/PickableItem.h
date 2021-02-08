@@ -18,12 +18,12 @@ protected:
 	virtual void BeginPlay() override;
 public:
 
-	ItemInfo itemInfo;
+	UItemInfo* itemInfo;
 
 	USceneComponent* root;
 	USkeletalMeshComponent* mesh;
 
-	void Initalize(ItemInfo pItemInfo);
+	void Initalize(UItemInfo* pItemInfo);
 
 	virtual void Interact() override;
 };

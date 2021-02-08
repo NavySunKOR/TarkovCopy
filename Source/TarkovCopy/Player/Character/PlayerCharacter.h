@@ -83,7 +83,7 @@ public:
 
 	void TookDamage(float damage, FHitResult pHitParts);
 
-	void PickupItem(ItemInfo pItemInfo);
+	void PickupItem(UItemInfo* pItemInfo);
 
 
 //BlueprintPureOnly

@@ -8,14 +8,14 @@ void APickableItem::BeginPlay()
 	Super::BeginPlay();
 }
 
-void APickableItem::Initalize(ItemInfo pItemInfo)
+void APickableItem::Initalize(UItemInfo* pItemInfo)
 {
 	itemInfo = pItemInfo;
 	root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	SetRootComponent(root);
 	mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	mesh->SetupAttachment(root);
-	mesh->SetSkeletalMesh(itemInfo.meshToDrop);
+	mesh->SetSkeletalMesh(itemInfo->meshToDrop);
 }
 
 void APickableItem::Interact()

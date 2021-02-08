@@ -17,9 +17,9 @@ public:
 	int capacityWidth;
 	int capacityHeight;
 
-	TArray<ItemInfo> itemContainers;
-	bool HasEmptySpace(ItemInfo pItemInfo);
-	void AddItem(ItemInfo pItemInfo);
+	TArray<UItemInfo*> itemContainers;
+	bool HasEmptySpace(UItemInfo* pItemInfo);
+	void AddItem(UItemInfo* pItemInfo);
 
 
 };

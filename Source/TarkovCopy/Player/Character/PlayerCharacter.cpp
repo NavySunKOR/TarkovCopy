@@ -113,7 +113,7 @@ void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 	}
 }
 
-void APlayerCharacter::PickupItem(ItemInfo pItemInfo)
+void APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
 {
 	inventory.AddItemToInventory(pItemInfo);
 }

@@ -11,7 +11,7 @@ Inventory::~Inventory()
 {
 }
 
-void Inventory::AddItemToInventory(ItemInfo item)
+void Inventory::AddItemToInventory(UItemInfo* item)
 {
 	backpack.AddItem(item);
 }

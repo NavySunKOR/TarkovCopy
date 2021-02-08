@@ -19,5 +19,5 @@ public:
 	
 	Backpack backpack;
 
-	void AddItemToInventory(ItemInfo item);
+	void AddItemToInventory(UItemInfo* item);
 };
