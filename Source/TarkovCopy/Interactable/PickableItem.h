@@ -17,7 +17,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 public:
-
+	UPROPERTY(EditAnywhere)
 	UItemInfo* itemInfo;
 
 	USceneComponent* root;

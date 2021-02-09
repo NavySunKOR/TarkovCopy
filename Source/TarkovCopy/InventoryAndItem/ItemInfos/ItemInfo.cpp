@@ -22,7 +22,14 @@
 //	delete spriteToUse;
 //	delete meshToDrop;
 //}
-
+void UItemInfo::InitRect(float pCenterX, float pCenterY)
+{
+	rect = FSlateRect();
+	rect.Left = pCenterX - width/2;
+	rect.Top = pCenterY + height / 2;
+	rect.Right = pCenterX + width / 2;
+	rect.Bottom = pCenterY - height / 2;
+}
 void UItemInfo::Use()
 {
 	--currentCapacity;
