@@ -28,7 +28,7 @@ void Backpack::Init()
 	}
 }
 
-bool Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
+std::tuple<bool, int, int> Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
 {
 	int spaceXCount = 0;
 	int spaceYCount = 0;
@@ -75,7 +75,7 @@ bool Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
 				if (spaceXCount == pItemInfo->width && spaceYCount == pItemInfo->height)
 				{
 					//TODO:tuple로  포지션도 같이 리턴할것.
-					return true;
+					return  std::tuple<bool, int, int>(true, x, y);
 				}
 				else
 				{
@@ -86,11 +86,11 @@ bool Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
 		}
 	}
 	//이미 윗단계에서 체크를 못했다면 없다는 것이므로 빠져나감.
-	return false;
+	return std::tuple<bool, int, int>(false, -1, -1);
 }
 
 
-bool Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
+std::tuple<bool, int, int> Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
 {
 	int spaceXCount = 0;
 	int spaceYCount = 0;
@@ -137,7 +137,7 @@ bool Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
 				if (spaceXCount == pItemInfo->width && spaceYCount == pItemInfo->height)
 				{
 					//TODO:tuple로  포지션도 같이 리턴할것.
-					return true;
+					return  std::tuple<bool, int, int>(true, x, y);
 				}
 				else
 				{
@@ -148,10 +148,22 @@ bool Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
 		}
 	}
 	//이미 윗단계에서 체크를 못했다면 없다는 것이므로 빠져나감.
-	return false;
+	return std::tuple<bool, int, int>(false, -1, -1);
 }
 
-bool Backpack::HasEmptySpace(UItemInfo* pItemInfo)
+void Backpack::UpdateInvenVisualize(UItemInfo* pItemInfo)
+{
+	for (int y = pItemInfo->top; y < pItemInfo->top + pItemInfo->height; y++)
+	{
+		for (int x = pItemInfo->left; y < pItemInfo->left + pItemInfo->width; x++)
+		{
+			*invenVisualize[x, y] = true;
+		}
+	}
+
+}
+
+std::tuple<bool, int, int> Backpack::HasEmptySpace(UItemInfo* pItemInfo)
 {
 	if (pItemInfo->width >= pItemInfo->height)
 	{
@@ -163,7 +175,7 @@ bool Backpack::HasEmptySpace(UItemInfo* pItemInfo)
 	}
 
 
-	return true;
+	return std::tuple<bool,int,int>(false,-1,-1);
 }
 
 
@@ -180,8 +192,11 @@ bool Backpack::IsIntersected(UItemInfo* pItemInfo)
 void Backpack::AddItem(UItemInfo* pItemInfo)
 {
 	//TODO: 아이템 빈자리 찾아서 추가 
-	if (HasEmptySpace(pItemInfo))
+	std::tuple<bool, int, int> results = HasEmptySpace(pItemInfo); //자리 여부 , 해당 아이템의 left,top
+	if (std::get<0>(results))
 	{
+		pItemInfo->InitRect(std::get<1>(results), std::get<2>(results));
+		UpdateInvenVisualize(pItemInfo);
 		itemContainers.Add(pItemInfo);
 	}
 }

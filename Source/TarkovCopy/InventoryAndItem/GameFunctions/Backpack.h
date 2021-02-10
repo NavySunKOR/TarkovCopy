@@ -23,12 +23,14 @@ public:
 
 	void Init();
 
-	bool HasEmptySpace(UItemInfo* pItemInfo);
+	std::tuple<bool,int,int> HasEmptySpace(UItemInfo* pItemInfo);
 	bool IsIntersected(UItemInfo* pItemInfo);
 	void AddItem(UItemInfo* pItemInfo);
 private:
-	bool HasEmptySpaceWidthAxis(UItemInfo* pItemInfo);
+	std::tuple<bool, int, int> HasEmptySpaceWidthAxis(UItemInfo* pItemInfo);
+	std::tuple<bool, int, int> HasEmptySpaceHeightAxis(UItemInfo* pItemInfo);
 
-	bool HasEmptySpaceHeightAxis(UItemInfo* pItemInfo);
+	void UpdateInvenVisualize(UItemInfo* pItemInfo);
+
 
 };

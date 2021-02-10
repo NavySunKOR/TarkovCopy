@@ -22,9 +22,11 @@
 //	delete spriteToUse;
 //	delete meshToDrop;
 //}
-void UItemInfo::InitRect(float left, float top)
+void UItemInfo::InitRect(float pLeft, float pTop)
 {
 	rect = FSlateRect();
+	left = pLeft;
+	top = pTop;
 	rect.Left = left;
 	rect.Top = top;
 	rect.Right = left + width;

@@ -39,7 +39,7 @@ public:
 	FSlateRect rect;
 
 	virtual void Use();
-	virtual void InitRect(float pCenterX, float pCenterY);
+	virtual void InitRect(float pLeft, float pTop);
 
 
 };
