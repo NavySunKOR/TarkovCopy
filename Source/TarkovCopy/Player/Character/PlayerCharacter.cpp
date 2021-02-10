@@ -316,6 +316,8 @@ void APlayerCharacter::Interact()
 
 	if (GetWorld()->LineTraceSingleByChannel(hit, start, start + dir.Vector() * 800.f, ECollisionChannel::ECC_Pawn, param))
 	{
+
+		UE_LOG(LogTemp, Warning, TEXT("Tesst : %s"), *hit.Actor->GetName());
 		AInteractableObject* inter = Cast<AInteractableObject>(hit.GetActor());
 		if (inter != nullptr)
 		{

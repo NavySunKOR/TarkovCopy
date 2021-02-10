@@ -16,10 +16,19 @@ public:
 	
 	int capacityWidth;
 	int capacityHeight;
+	bool** invenVisualize;
+
 
 	TArray<UItemInfo*> itemContainers;
-	bool HasEmptySpace(UItemInfo* pItemInfo);
-	void AddItem(UItemInfo* pItemInfo);
 
+	void Init();
+
+	bool HasEmptySpace(UItemInfo* pItemInfo);
+	bool IsIntersected(UItemInfo* pItemInfo);
+	void AddItem(UItemInfo* pItemInfo);
+private:
+	bool HasEmptySpaceWidthAxis(UItemInfo* pItemInfo);
+
+	bool HasEmptySpaceHeightAxis(UItemInfo* pItemInfo);
 
 };

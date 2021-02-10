@@ -19,12 +19,12 @@ public:
 	//virtual ~UItemInfo();
 
 	UPROPERTY(EditAnywhere)
-	float width;
+	int width;
 	UPROPERTY(EditAnywhere)
-	float height;
+	int height;
 
-	float left;
-	float top;
+	int left;
+	int top;
 
 	UPROPERTY(EditAnywhere)
 	int maxCapacity;

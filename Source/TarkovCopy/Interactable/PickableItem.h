@@ -15,7 +15,12 @@ class TARKOVCOPY_API APickableItem : public AInteractableObject
 	GENERATED_BODY()
 protected:
 	// Called when the game starts
+	APickableItem();
 	virtual void BeginPlay() override;
+private:
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UItemInfo> initItem;
+
 public:
 	UPROPERTY(EditAnywhere)
 	UItemInfo* itemInfo;
@@ -23,7 +28,7 @@ public:
 	USceneComponent* root;
 	USkeletalMeshComponent* mesh;
 
-	void Initalize(UItemInfo* pItemInfo);
+	void Initalize(TSubclassOf<UItemInfo> pItemInfo);
 
 	virtual void Interact() override;
 };

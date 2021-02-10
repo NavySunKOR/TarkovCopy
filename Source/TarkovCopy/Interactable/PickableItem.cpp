@@ -3,19 +3,27 @@
 
 #include "PickableItem.h"
 
-void APickableItem::BeginPlay()
+APickableItem::APickableItem()
 {
-	Super::BeginPlay();
-}
-
-void APickableItem::Initalize(UItemInfo* pItemInfo)
-{
-	itemInfo = pItemInfo;
-	root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	root = CreateDefaultSubobject<USceneComponent>(TEXT("createdRoot"));	
 	SetRootComponent(root);
 	mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	mesh->SetupAttachment(root);
+}
+
+void APickableItem::BeginPlay()
+{
+	Super::BeginPlay();
+	if (initItem != nullptr)
+		Initalize(initItem);
+}
+
+void APickableItem::Initalize(TSubclassOf<UItemInfo> pItemInfo)
+{
+	itemInfo = pItemInfo.GetDefaultObject();
 	mesh->SetSkeletalMesh(itemInfo->meshToDrop);
+	mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	mesh->SetSimulatePhysics(true);
 }
 
 void APickableItem::Interact()

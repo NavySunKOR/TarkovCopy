@@ -22,13 +22,13 @@
 //	delete spriteToUse;
 //	delete meshToDrop;
 //}
-void UItemInfo::InitRect(float pCenterX, float pCenterY)
+void UItemInfo::InitRect(float left, float top)
 {
 	rect = FSlateRect();
-	rect.Left = pCenterX - width/2;
-	rect.Top = pCenterY + height / 2;
-	rect.Right = pCenterX + width / 2;
-	rect.Bottom = pCenterY - height / 2;
+	rect.Left = left;
+	rect.Top = top;
+	rect.Right = left + width;
+	rect.Bottom = top - height;
 }
 void UItemInfo::Use()
 {
