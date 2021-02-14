@@ -23,6 +23,8 @@ void APlayerCharacter::BeginPlay()
 
 	springArm = FindComponentByClass<USpringArmComponent>();
 
+
+
 	originalSpringArmPos = springArm->TargetOffset;
 	TArray <USceneComponent*> childs;
 	springArm->GetChildrenComponents(true, childs);
@@ -113,9 +115,9 @@ void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 	}
 }
 
-void APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
+bool APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
 {
-	inventory.AddItemToInventory(pItemInfo);
+	return inventory.AddItemToInventory(pItemInfo);
 }
 
 bool APlayerCharacter::IsWeaponEquiped()

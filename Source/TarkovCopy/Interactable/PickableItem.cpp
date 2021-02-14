@@ -29,6 +29,8 @@ void APickableItem::Initalize(TSubclassOf<UItemInfo> pItemInfo)
 void APickableItem::Interact()
 {
 	Super::Interact();
-	playerCharacter->PickupItem(itemInfo);
-	Destroy();
+	if (playerCharacter->PickupItem(itemInfo))
+		Destroy();
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Failed to pickup"));
 }
