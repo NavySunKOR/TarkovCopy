@@ -3,10 +3,13 @@
 #include <GameFramework/PlayerInput.h>
 #include <GameFramework/Character.h>
 #include <Kismet/GameplayStatics.h>
+#include <Blueprint/WidgetTree.h>
 #include <Blueprint/UserWidget.h>
 #include <Components/CanvasPanelSlot.h>
-#include <TarkovCopy/GameMode/EscapeGameMode.h>
 #include <TimerManager.h>
+#include "TarkovCopy/GameMode/EscapeGameMode.h"
+#include "TarkovCopy/PublicProperty/UMGPublicProperites.h"
+#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemIcon.h"
 #include "FPPlayerController.h"
 
 void AFPPlayerController::BeginPlay()
@@ -62,15 +65,48 @@ void AFPPlayerController::InitInvenotry()
 {
 	APlayerCharacter* character = Cast<APlayerCharacter>(GetPawn());
 	inventory = CreateWidget<UUserWidget>(this, inventoryWidget);
-	inventory->AddToViewport();
-	UE_LOG(LogTemp, Warning, TEXT("sizeOfGrid : %s"), *sizeOfGrid.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("Grande : %s"), *character->inventory->backpack->GetBackpackSize().ToString());
 
-	UCanvasPanelSlot* canvasPanel = Cast<UCanvasPanelSlot>(inventory->GetWidgetFromName(TEXT("Background"))->Slot);
-	if (canvasPanel != nullptr)
-		canvasPanel->SetSize(sizeOfGrid * character->inventory->backpack->GetBackpackSize());
+	itemContainer = Cast<UCanvasPanel>(inventory->GetWidgetFromName(TEXT("ItemContainer")));
+	if (itemContainer == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Gone burst!"));
+	}
+	UCanvasPanelSlot* backgroundImage  = Cast<UCanvasPanelSlot>(inventory->GetWidgetFromName(TEXT("Background"))->Slot);
+	if (backgroundImage != nullptr && itemContainer != nullptr)
+	{
+		backgroundImage->SetSize(FVector2D(UMGPublicProperites::BASIC_INVENTORY_GRID_WIDTH, UMGPublicProperites::BASIC_INVENTORY_GRID_HEIGHT) * character->inventory->backpack->GetBackpackSize());
+		UCanvasPanelSlot* canva = Cast<UCanvasPanelSlot>(itemContainer->Slot);
+		if (canva != nullptr)
+			canva->SetSize(FVector2D(UMGPublicProperites::BASIC_INVENTORY_GRID_WIDTH, UMGPublicProperites::BASIC_INVENTORY_GRID_HEIGHT) * character->inventory->backpack->GetBackpackSize());
+	}
 	else
-		UE_LOG(LogTemp, Warning, TEXT("Canvas is null! "));
+		UE_LOG(LogTemp, Warning, TEXT("Canvas is null!"));
+}
+
+void AFPPlayerController::OpenCloseInventory()
+{
+	if (inventory->IsInViewport())
+	{
+		inventory->RemoveFromViewport();
+	}
+	else
+	{
+		inventory->AddToViewport();
+	}
+}
+
+void AFPPlayerController::AddItem(UItemInfo* itemInfo)
+{
+
+	UItemIcon* uiItem = inventory->WidgetTree->ConstructWidget<UItemIcon>(iconWidget);
+
+	UCanvasPanelSlot* panelSlotForItem = Cast<UCanvasPanelSlot>(itemContainer->AddChild(uiItem));
+	uiItem->Slot = panelSlotForItem;
+	uiItem->Init(itemInfo);
+	UE_LOG(LogTemp, Warning, TEXT("Successfully added"));
+	items.Add(uiItem);
+	UE_LOG(LogTemp, Warning, TEXT("Destructable damned"));
 }
 
 void AFPPlayerController::ShowQuestInfo(FString itemName, float distance)

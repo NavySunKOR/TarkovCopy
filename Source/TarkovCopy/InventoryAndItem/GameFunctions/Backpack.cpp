@@ -3,11 +3,8 @@
 #include <Layout/SlateRect.h>
 #include "Backpack.h"
 
-void UBackpack::Init(int pCapacityWidth, int pCapacityHeight)
+void UBackpack::Init()
 {
-	capacityWidth = pCapacityWidth;
-	capacityHeight = pCapacityHeight;
-
 	invenVisualize = new bool* [capacityWidth];
 	for (int i = 0; i < capacityWidth; i++)
 	{

@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include <GameFramework/SpringArmComponent.h>
-#include <TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h>
-#include <TarkovCopy/InventoryAndItem/GameFunctions/Inventory.h>
-#include <TarkovCopy/Weapons/BaseGun.h>
+#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
+#include "TarkovCopy/InventoryAndItem/GameFunctions/Inventory.h"
+#include "TarkovCopy/Player/Controller/FPPlayerController.h"
+#include "TarkovCopy/Weapons/BaseGun.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -25,6 +26,7 @@ protected:
 	float deltaTime = 0.f;
 	USpringArmComponent* springArm;
 	FVector originalSpringArmPos;
+	AFPPlayerController* playerController;
 	bool isSprinting = false;
 	bool isCrouch = false;
 
@@ -44,6 +46,7 @@ protected:
 	void ReloadWeapon();
 
 	void Interact();
+	void Inventory();
 
 
 

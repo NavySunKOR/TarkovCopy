@@ -31,7 +31,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	int currentCapacity;
 	UPROPERTY(EditAnywhere)
-	UTexture* spriteToUse;
+	UTexture2D* spriteToUse;
 	UPROPERTY(EditAnywhere)
 	USkeletalMesh* meshToDrop;
 

@@ -27,5 +27,4 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UItemInfo* itemM416;
-
 };

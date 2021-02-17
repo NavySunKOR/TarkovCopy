@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include <Components/TextBlock.h>
+#include <Components/CanvasPanel.h>
 #include "GameFramework/PlayerController.h"
+#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemIcon.h"
 #include "FPPlayerController.generated.h"
 
 /**
@@ -39,9 +41,11 @@ private:
 	//TODO: UI관련, 추 후에 컨트롤러로 옮길것
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> inventoryWidget;
-	UUserWidget* inventory;
 	UPROPERTY(EditAnywhere)
-	FVector2D sizeOfGrid;
+	TSubclassOf<UItemIcon> iconWidget;
+	UUserWidget* inventory;
+	UCanvasPanel* itemContainer;
+	TArray<UItemIcon*> items;
 
 
 	UTextBlock* alertType;
@@ -61,6 +65,8 @@ private:
 	
 public:
 	void InitInvenotry();
+	void OpenCloseInventory();
+	void AddItem(UItemInfo* itemInfo);
 
 	void ShowQuestInfo(FString itemName, float distance);
 	void ShowExfilPoints(FString exfilPointsName, float distance);

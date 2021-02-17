@@ -74,9 +74,9 @@ void APlayerCharacter::BeginPlay()
 	}
 	EquipPrimary();
 
-	AFPPlayerController* playerCon = Cast<AFPPlayerController>(GetController());
-	if (playerCon != nullptr)
-		playerCon->InitInvenotry();
+	playerController = Cast<AFPPlayerController>(GetController());
+	if (playerController != nullptr)
+		playerController->InitInvenotry();
 }
 
 // Called every frame
@@ -103,6 +103,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction(TEXT("Crouch"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SetCrouch);
 	PlayerInputComponent->BindAction(TEXT("Crouch"), EInputEvent::IE_Released, this, &APlayerCharacter::SetStanding);
 	PlayerInputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &APlayerCharacter::Interact);
+	PlayerInputComponent->BindAction(TEXT("Inventory"), EInputEvent::IE_Pressed, this, &APlayerCharacter::Inventory);
 
 	PlayerInputComponent->BindAxis(TEXT("MoveVertical"), this, &APlayerCharacter::MoveVertical);
 	PlayerInputComponent->BindAxis(TEXT("MoveHorizontal"), this, &APlayerCharacter::MoveHorizontal);
@@ -123,7 +124,12 @@ void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 
 bool APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
 {
-	return inventory->AddItemToInventory(pItemInfo);
+	bool isItemAdded = inventory->AddItemToInventory(pItemInfo);
+	if (isItemAdded && playerController != nullptr)
+	{
+		playerController->AddItem(pItemInfo);
+	}
+	return isItemAdded;
 }
 
 bool APlayerCharacter::IsWeaponEquiped()
@@ -332,4 +338,9 @@ void APlayerCharacter::Interact()
 			inter->Interact();
 		}
 	}
+}
+
+void APlayerCharacter::Inventory()
+{
+	playerController->OpenCloseInventory();
 }

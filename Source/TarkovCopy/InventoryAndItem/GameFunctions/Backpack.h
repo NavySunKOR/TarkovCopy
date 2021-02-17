@@ -27,7 +27,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	int capacityHeight;
 
-	void Init(int pCapacityWidth, int pCapacityHeight);
+	void Init();
 	std::tuple<bool, int, int> HasEmptySpace(UItemInfo* pItemInfo);
 	bool IsIntersected(UItemInfo* pItemInfo);
 	bool AddItem(UItemInfo* pItemInfo);
