@@ -4,6 +4,7 @@
 #include <GameFramework/Character.h>
 #include <Kismet/GameplayStatics.h>
 #include <Blueprint/UserWidget.h>
+#include <Components/CanvasPanelSlot.h>
 #include <TarkovCopy/GameMode/EscapeGameMode.h>
 #include <TimerManager.h>
 #include "FPPlayerController.h"
@@ -32,6 +33,7 @@ void AFPPlayerController::BeginPlay()
 	AEscapeGameMode* gameMode = GetWorld()->GetAuthGameMode<AEscapeGameMode>();
 	if(gameMode)
 		gameMode->SelectQuestItems();
+
 }
 
 void AFPPlayerController::SetupInputComponent()
@@ -54,6 +56,21 @@ void AFPPlayerController::PlayerTick(float DeltaTime)
 			ExfilingComplete();
 		}
 	}
+}
+
+void AFPPlayerController::InitInvenotry()
+{
+	APlayerCharacter* character = Cast<APlayerCharacter>(GetPawn());
+	inventory = CreateWidget<UUserWidget>(this, inventoryWidget);
+	inventory->AddToViewport();
+	UE_LOG(LogTemp, Warning, TEXT("sizeOfGrid : %s"), *sizeOfGrid.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Grande : %s"), *character->inventory->backpack->GetBackpackSize().ToString());
+
+	UCanvasPanelSlot* canvasPanel = Cast<UCanvasPanelSlot>(inventory->GetWidgetFromName(TEXT("Background"))->Slot);
+	if (canvasPanel != nullptr)
+		canvasPanel->SetSize(sizeOfGrid * character->inventory->backpack->GetBackpackSize());
+	else
+		UE_LOG(LogTemp, Warning, TEXT("Canvas is null! "));
 }
 
 void AFPPlayerController::ShowQuestInfo(FString itemName, float distance)

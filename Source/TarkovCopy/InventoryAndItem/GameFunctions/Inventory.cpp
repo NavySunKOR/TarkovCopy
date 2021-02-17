@@ -3,22 +3,17 @@
 
 #include "Inventory.h"
 
-//Inventory::Inventory()
-//{
-//	backpack.Init(10, 20);
-//}
-
-Inventory::Inventory()
+void UInventory::Init()
 {
-	//가방 초기화 TODO: 픽어블로 바뀌면 제거할것
-	backpack.Init(5, 5);
+	backpack = backpackType.GetDefaultObject();
 }
 
-Inventory::~Inventory()
+bool UInventory::AddItemToInventory(UItemInfo* item)
 {
+	return backpack->AddItem(item);
 }
 
-bool Inventory::AddItemToInventory(UItemInfo* item)
+UBackpack* UInventory::GetBackpack()
 {
-	return backpack.AddItem(item);
+	return backpack;
 }

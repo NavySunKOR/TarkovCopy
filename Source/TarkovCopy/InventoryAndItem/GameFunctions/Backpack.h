@@ -2,35 +2,37 @@
 
 #pragma once
 
-#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
+#include "Backpack.generated.h"
 
 /**
  * 
  */
-class TARKOVCOPY_API Backpack
+UCLASS(Blueprintable, BlueprintType)
+class TARKOVCOPY_API UBackpack : public UObject
 {
-public:
-	Backpack();
-	~Backpack();
-	
-	int capacityWidth;
-	int capacityHeight;
-	bool** invenVisualize;
-
-
-	TArray<UItemInfo*> itemContainers;
-
-	void Init(int pCapacityWidth, int pCapacityHeight);
-
-	std::tuple<bool,int,int> HasEmptySpace(UItemInfo* pItemInfo);
-	bool IsIntersected(UItemInfo* pItemInfo);
-	bool AddItem(UItemInfo* pItemInfo);
+	GENERATED_BODY()
 private:
+	bool** invenVisualize;
+	TArray<UItemInfo*> itemContainers;
 	std::tuple<bool, int, int> HasEmptySpaceWidthAxis(UItemInfo* pItemInfo);
 	std::tuple<bool, int, int> HasEmptySpaceHeightAxis(UItemInfo* pItemInfo);
-
 	void UpdateInvenVisualize(UItemInfo* pItemInfo);
 
+public:
+	UPROPERTY(EditAnywhere)
+	int capacityWidth;
+	UPROPERTY(EditAnywhere)
+	int capacityHeight;
+
+	void Init(int pCapacityWidth, int pCapacityHeight);
+	std::tuple<bool, int, int> HasEmptySpace(UItemInfo* pItemInfo);
+	bool IsIntersected(UItemInfo* pItemInfo);
+	bool AddItem(UItemInfo* pItemInfo);
+
+	UFUNCTION(BlueprintPure)
+	FVector2D GetBackpackSize();
 
 };

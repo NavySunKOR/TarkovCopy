@@ -71,10 +71,15 @@ protected:
 	int ownedPrimaryWeaponAmmo; 
 	int ownedSecondaryWeaponAmmo;
 
-	Inventory inventory;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UInventory> inventoryOrigin;
 
 
 public:	
+
+	UInventory* inventory;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -84,7 +89,6 @@ public:
 	void TookDamage(float damage, FHitResult pHitParts);
 
 	bool PickupItem(UItemInfo* pItemInfo);
-
 
 //BlueprintPureOnly
 protected:
@@ -108,6 +112,5 @@ protected:
 	bool IsShotgun();
 	UFUNCTION(BlueprintPure)
 	int GetReloadState();
-
 
 };

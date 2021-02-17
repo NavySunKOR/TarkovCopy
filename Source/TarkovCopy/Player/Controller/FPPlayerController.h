@@ -25,18 +25,24 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> crosshairWidget;
-	UPROPERTY(EditAnywhere)
 	UUserWidget* crosshair;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> alertHudWidget;
-	UPROPERTY(EditAnywhere)
 	UUserWidget* alertHud;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> exfilAlertWidget;
-	UPROPERTY(EditAnywhere)
 	UUserWidget* exfilAlert;
+
+
+	//TODO: UI관련, 추 후에 컨트롤러로 옮길것
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> inventoryWidget;
+	UUserWidget* inventory;
+	UPROPERTY(EditAnywhere)
+	FVector2D sizeOfGrid;
+
 
 	UTextBlock* alertType;
 	UTextBlock* missionObject;
@@ -54,6 +60,8 @@ private:
 	void CloseAlert();
 	
 public:
+	void InitInvenotry();
+
 	void ShowQuestInfo(FString itemName, float distance);
 	void ShowExfilPoints(FString exfilPointsName, float distance);
 

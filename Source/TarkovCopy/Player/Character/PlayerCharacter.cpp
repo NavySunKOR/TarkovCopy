@@ -2,6 +2,8 @@
 
 #include <GameFramework/CharacterMovementComponent.h>
 #include "TarkovCopy/Interactable/InteractableObject.h"
+#include <Blueprint/UserWidget.h>
+#include "TarkovCopy/Player/Controller/FPPlayerController.h"
 #include "PlayerCharacter.h"
 
 // Sets default values
@@ -23,7 +25,9 @@ void APlayerCharacter::BeginPlay()
 
 	springArm = FindComponentByClass<USpringArmComponent>();
 
-
+	//TODO:나중에 인벤토리 초기화 고칠것
+	inventory = inventoryOrigin.GetDefaultObject();
+	inventory->Init();
 
 	originalSpringArmPos = springArm->TargetOffset;
 	TArray <USceneComponent*> childs;
@@ -70,7 +74,9 @@ void APlayerCharacter::BeginPlay()
 	}
 	EquipPrimary();
 
-
+	AFPPlayerController* playerCon = Cast<AFPPlayerController>(GetController());
+	if (playerCon != nullptr)
+		playerCon->InitInvenotry();
 }
 
 // Called every frame
@@ -117,7 +123,7 @@ void APlayerCharacter::TookDamage(float damage, FHitResult pHitParts)
 
 bool APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
 {
-	return inventory.AddItemToInventory(pItemInfo);
+	return inventory->AddItemToInventory(pItemInfo);
 }
 
 bool APlayerCharacter::IsWeaponEquiped()
@@ -137,7 +143,6 @@ bool APlayerCharacter::IsWalking()
 
 int APlayerCharacter::GetWeaponCode()
 {
-	
 	return (currentActiveGun)?currentActiveGun->itemCode:-1;
 }
 

@@ -3,20 +3,12 @@
 #include <Layout/SlateRect.h>
 #include "Backpack.h"
 
-Backpack::Backpack()
-{
-}
-
-Backpack::~Backpack()
-{
-}
-
-void Backpack::Init(int pCapacityWidth, int pCapacityHeight)
+void UBackpack::Init(int pCapacityWidth, int pCapacityHeight)
 {
 	capacityWidth = pCapacityWidth;
 	capacityHeight = pCapacityHeight;
 
-	invenVisualize = new bool*[capacityWidth];
+	invenVisualize = new bool* [capacityWidth];
 	for (int i = 0; i < capacityWidth; i++)
 	{
 		invenVisualize[i] = new bool[capacityHeight];
@@ -33,7 +25,7 @@ void Backpack::Init(int pCapacityWidth, int pCapacityHeight)
 	}
 }
 
-std::tuple<bool, int, int> Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
+std::tuple<bool, int, int> UBackpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo)
 {
 	int spaceXCount = 0;
 	int spaceYCount = 0;
@@ -47,56 +39,56 @@ std::tuple<bool, int, int> Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo
 			xIncrease = 1;
 
 			//해당칸이 비었다면
-			UE_LOG(LogTemp,Warning,TEXT("Positions x : %d ,  y : %d  "),x,y)
-			if (invenVisualize[x][y] == false)
-			{
-				//그 근처를 아이템의 width, height 만큼 탐색
-				for (int startY = y; startY < y + pItemInfo->height; startY++)
+			UE_LOG(LogTemp, Warning, TEXT("Positions x : %d ,  y : %d  "), x, y)
+				if (invenVisualize[x][y] == false)
 				{
-					for (int startX = x; startX < x + pItemInfo->width; startX++)
+					//그 근처를 아이템의 width, height 만큼 탐색
+					for (int startY = y; startY < y + pItemInfo->height; startY++)
 					{
-						//startX가 인벤 크기를 벗어나면 공간 없음 처리
-						if (startX >= capacityWidth)
+						for (int startX = x; startX < x + pItemInfo->width; startX++)
 						{
-							spaceXCount = 0;
-							break;
-						}
+							//startX가 인벤 크기를 벗어나면 공간 없음 처리
+							if (startX >= capacityWidth)
+							{
+								spaceXCount = 0;
+								break;
+							}
 
-						//해당 인벤에 만약에 빈칸이 하나라도 통째로 무쓸모.
-						if (invenVisualize[startX][startY] == false)
+							//해당 인벤에 만약에 빈칸이 하나라도 통째로 무쓸모.
+							if (invenVisualize[startX][startY] == false)
+							{
+								spaceXCount++;
+							}
+							else
+							{
+								spaceXCount = 0;
+								break;
+							}
+						}
+						if (spaceXCount == 0)
 						{
-							spaceXCount++;
+							spaceYCount = 0;
+							break;
 						}
 						else
 						{
-							spaceXCount = 0;
-							break;
+							spaceYCount++;
 						}
 					}
-					if (spaceXCount == 0)
+
+					UE_LOG(LogTemp, Warning, TEXT("Total spaceXCount :%d , spaceYCount : %d"), spaceXCount, spaceYCount);
+					//해당 공간이 사용할 수 있는 공간이면 그자리에서 끝내고 아니면 계속 탐색
+					if (spaceXCount >= pItemInfo->width && spaceYCount >= pItemInfo->height)
 					{
-						spaceYCount = 0;
-						break;
+						//TODO:tuple로  포지션도 같이 리턴할것.
+						return  std::tuple<bool, int, int>(true, x, y);
 					}
 					else
 					{
-						spaceYCount++;
+						//이미 width 만큼 해당 지점을 검색했기 때문에 다음 지점으로 패스 시킨다.
+						xIncrease += pItemInfo->width;
 					}
 				}
-
-				UE_LOG(LogTemp, Warning, TEXT("Total spaceXCount :%d , spaceYCount : %d"), spaceXCount, spaceYCount);
-				//해당 공간이 사용할 수 있는 공간이면 그자리에서 끝내고 아니면 계속 탐색
-				if (spaceXCount >= pItemInfo->width && spaceYCount >= pItemInfo->height)
-				{
-					//TODO:tuple로  포지션도 같이 리턴할것.
-					return  std::tuple<bool, int, int>(true, x, y);
-				}
-				else
-				{
-					//이미 width 만큼 해당 지점을 검색했기 때문에 다음 지점으로 패스 시킨다.
-					xIncrease += pItemInfo->width;
-				}
-			}
 		}
 	}
 	//이미 윗단계에서 체크를 못했다면 없다는 것이므로 빠져나감.
@@ -104,7 +96,7 @@ std::tuple<bool, int, int> Backpack::HasEmptySpaceWidthAxis(UItemInfo* pItemInfo
 }
 
 
-std::tuple<bool, int, int> Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
+std::tuple<bool, int, int> UBackpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInfo)
 {
 	int spaceXCount = 0;
 	int spaceYCount = 0;
@@ -172,7 +164,7 @@ std::tuple<bool, int, int> Backpack::HasEmptySpaceHeightAxis(UItemInfo* pItemInf
 	return std::tuple<bool, int, int>(false, -1, -1);
 }
 
-void Backpack::UpdateInvenVisualize(UItemInfo* pItemInfo)
+void UBackpack::UpdateInvenVisualize(UItemInfo* pItemInfo)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Update Visualize - top : %d , height : %d"), pItemInfo->top, pItemInfo->top + pItemInfo->height);
 	UE_LOG(LogTemp, Warning, TEXT("Update Visualize - left : %d , width : %d"), pItemInfo->left, pItemInfo->left + pItemInfo->width);
@@ -186,25 +178,25 @@ void Backpack::UpdateInvenVisualize(UItemInfo* pItemInfo)
 
 }
 
-std::tuple<bool, int, int> Backpack::HasEmptySpace(UItemInfo* pItemInfo)
+std::tuple<bool, int, int> UBackpack::HasEmptySpace(UItemInfo* pItemInfo)
 {
 	if (pItemInfo->width >= pItemInfo->height)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("Width!!"))
-		return HasEmptySpaceWidthAxis(pItemInfo);
+		UE_LOG(LogTemp, Warning, TEXT("Width!!"))
+			return HasEmptySpaceWidthAxis(pItemInfo);
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Height!!"))
-		return HasEmptySpaceHeightAxis(pItemInfo);
+			return HasEmptySpaceHeightAxis(pItemInfo);
 	}
 
 
-	return std::tuple<bool,int,int>(false,-1,-1);
+	return std::tuple<bool, int, int>(false, -1, -1);
 }
 
 
-bool Backpack::IsIntersected(UItemInfo* pItemInfo)
+bool UBackpack::IsIntersected(UItemInfo* pItemInfo)
 {
 	for (int i = 0; i < itemContainers.Num(); i++)
 	{
@@ -214,7 +206,7 @@ bool Backpack::IsIntersected(UItemInfo* pItemInfo)
 	return false;
 }
 
-bool Backpack::AddItem(UItemInfo* pItemInfo)
+bool UBackpack::AddItem(UItemInfo* pItemInfo)
 {
 	//TODO: 아이템 빈자리 찾아서 추가 
 	std::tuple<bool, int, int> results = HasEmptySpace(pItemInfo); //자리 여부 , 해당 아이템의 left,top
@@ -232,5 +224,7 @@ bool Backpack::AddItem(UItemInfo* pItemInfo)
 	}
 }
 
-
-
+FVector2D UBackpack::GetBackpackSize()
+{
+	return FVector2D(capacityWidth,capacityHeight);
+}
