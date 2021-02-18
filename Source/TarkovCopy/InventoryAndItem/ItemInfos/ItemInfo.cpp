@@ -32,7 +32,12 @@ void UItemInfo::InitRect(float pLeft, float pTop)
 	rect.Right = left + width;
 	rect.Bottom = top - height;
 }
-void UItemInfo::Use()
+bool UItemInfo::Use()
 {
-	--currentCapacity;
+	return false;
+}
+
+bool UItemInfo::DropItem()
+{
+	return false;
 }

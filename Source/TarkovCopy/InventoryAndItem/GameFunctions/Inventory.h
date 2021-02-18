@@ -25,6 +25,8 @@ public:
 
 	void Init();
 	bool AddItemToInventory(UItemInfo* item);
+	bool UseItem(UItemInfo* pItem);
+	bool DropItem(UItemInfo* pItem);
 
 	UFUNCTION(BlueprintPure)
 	UBackpack* GetBackpack();

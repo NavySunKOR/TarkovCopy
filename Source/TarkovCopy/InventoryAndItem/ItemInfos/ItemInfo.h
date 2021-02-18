@@ -38,7 +38,8 @@ public:
 
 	FSlateRect rect;
 
-	virtual void Use();
+	virtual bool Use();
+	virtual bool DropItem();
 	virtual void InitRect(float pLeft, float pTop);
 
 

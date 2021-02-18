@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include <Components/Button.h>
 #include <Components/Image.h>
+#include <Components/Border.h>
 #include "ItemIcon.generated.h"
 
 class UItemInfo;
 class UInventory;
 class AFPPlayerController;
-
 /**
  * 
  */
 UCLASS()
-class TARKOVCOPY_API UItemIcon : public UButton
+class TARKOVCOPY_API UItemIcon : public UUserWidget
 {
 	GENERATED_BODY()
 	
@@ -25,10 +25,10 @@ public:
 	UInventory* invenRef;
 	AFPPlayerController* controllerRef;
 
-	UFUNCTION()
-	void ActionItem();
-	void UseItem();
-	void DropItem();
 	void Init(UItemInfo* pItemInfo, UInventory* pInven, AFPPlayerController* pController);
-	
+	UFUNCTION(BlueprintCallable)
+	void UseItem();
+	UFUNCTION(BlueprintCallable)
+	void DropItem();
+
 };

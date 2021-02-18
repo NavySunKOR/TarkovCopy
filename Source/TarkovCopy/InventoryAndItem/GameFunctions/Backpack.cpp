@@ -221,6 +221,18 @@ bool UBackpack::AddItem(UItemInfo* pItemInfo)
 	}
 }
 
+UItemInfo* UBackpack::GetItemReference(UItemInfo* pItemPtr)
+{
+	for (int i = 0; i < itemContainers.Num(); i++)
+	{
+		if (itemContainers[i] == pItemPtr)
+		{
+			return itemContainers[i];
+		}
+	}
+	return nullptr;
+}
+
 FVector2D UBackpack::GetBackpackSize()
 {
 	return FVector2D(capacityWidth,capacityHeight);

@@ -70,6 +70,8 @@ public:
 	void OpenCloseInventory();
 	void AddItem(UItemInfo* itemInfo,UInventory* pInvenRef);
 
+
+
 	void ShowQuestInfo(FString itemName, float distance);
 	void ShowExfilPoints(FString exfilPointsName, float distance);
 

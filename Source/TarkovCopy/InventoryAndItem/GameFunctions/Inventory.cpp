@@ -14,6 +14,18 @@ bool UInventory::AddItemToInventory(UItemInfo* item)
 	return backpack->AddItem(item);
 }
 
+bool UInventory::UseItem(UItemInfo* pItem)
+{
+	UItemInfo* foundItem = backpack->GetItemReference(pItem);
+	return foundItem->Use();
+}
+
+bool UInventory::DropItem(UItemInfo* pItem)
+{
+	UItemInfo* foundItem = backpack->GetItemReference(pItem);
+	return foundItem->DropItem();
+}
+
 UBackpack* UInventory::GetBackpack()
 {
 	return backpack;

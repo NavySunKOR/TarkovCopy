@@ -3,8 +3,10 @@
 
 
 #include <Components/CanvasPanelSlot.h>
+#include <Blueprint/WidgetTree.h>
 #include "ItemInfo.h"
 #include "TarkovCopy/PublicProperty/UMGPublicProperites.h"
+#include "TarkovCopy/Player/Controller/FPPlayerController.h"
 #include "ItemIcon.h"
 
 void UItemIcon::Init(UItemInfo* pItemInfo, UInventory* pInven, AFPPlayerController* pController)
@@ -12,10 +14,11 @@ void UItemIcon::Init(UItemInfo* pItemInfo, UInventory* pInven, AFPPlayerControll
 	itemInfo = pItemInfo;
 	invenRef = pInven;
 	controllerRef = pController;
-	WidgetStyle.Normal.SetResourceObject(pItemInfo->spriteToUse);
-	WidgetStyle.Hovered.SetResourceObject(pItemInfo->spriteToUse);
-	WidgetStyle.Pressed.SetResourceObject(pItemInfo->spriteToUse);
-	UE_LOG(LogTemp, Warning, TEXT("WTF is this? : %d"),Slot);
+	iconImage = WidgetTree->ConstructWidget<UImage>();
+	iconImage->SetBrushFromTexture(pItemInfo->spriteToUse);
+	WidgetTree->RootWidget = iconImage;
+
+	UE_LOG(LogTemp, Warning, TEXT("WTF is this? : %d"), Slot);
 	UCanvasPanelSlot* canvas = Cast<UCanvasPanelSlot>(Slot);
 	if(canvas != nullptr)
 	{
@@ -27,20 +30,46 @@ void UItemIcon::Init(UItemInfo* pItemInfo, UInventory* pInven, AFPPlayerControll
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Setting size failllllled!"));
 	}
-	OnClicked.AddDynamic(this, &UItemIcon::ActionItem);
-}
-
-void UItemIcon::ActionItem()
-{
-	UE_LOG(LogTemp, Warning, TEXT("ActionItems"));
 }
 
 void UItemIcon::UseItem()
 {
-
+	UE_LOG(LogTemp,Warning,TEXT("UsingItem"))
+	bool isEmpty = invenRef->UseItem(itemInfo);
+	if (isEmpty)
+	{
+		RemoveFromParent();
+	}
 }
 
 void UItemIcon::DropItem()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("DropItem"))
+	bool isEmpty = invenRef->DropItem(itemInfo);
+	if (isEmpty)
+	{
+		RemoveFromParent();
+	}
 }
+
+//FEventReply UItemIcon::OnMouseButtonDown(FGeometry MyGeometry, const FPointerEvent& MouseEvent)
+//{
+//	Super::OnMouseButtonDown(MyGeometry, MouseEvent);
+//	UE_LOG(LogTemp, Warning, TEXT("Clicked! !! "));
+//	if (MouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
+//	{
+//		DropItem();
+//	}
+//	else if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+//	{
+//		UseItem();
+//	}
+//
+//	return FEventReply(true);
+//}
+//
+//void UItemIcon::OnMouseEnter(FGeometry MyGeometry, const FPointerEvent& MouseEvent)
+//{
+//	Super::OnMouseEnter(MyGeometry, MouseEvent);
+//	UE_LOG(LogTemp, Warning, TEXT("Backaw34er"));
+//}
