@@ -88,10 +88,22 @@ void AFPPlayerController::OpenCloseInventory()
 {
 	if (inventory->IsInViewport())
 	{
+		bShowMouseCursor = false;
+		bEnableClickEvents = false;
+		bEnableMouseOverEvents = false;
+		SetIgnoreLookInput(false);
+		SetIgnoreMoveInput(false);
+		isInventoryOpened = false;
 		inventory->RemoveFromViewport();
 	}
 	else
 	{
+		bShowMouseCursor = true;
+		bEnableClickEvents = true;
+		bEnableMouseOverEvents = true;
+		isInventoryOpened = true;
+		SetIgnoreLookInput(true);
+		SetIgnoreMoveInput(true);
 		inventory->AddToViewport();
 	}
 }

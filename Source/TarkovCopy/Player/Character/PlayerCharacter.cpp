@@ -18,6 +18,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	playerController = Cast<AFPPlayerController>(GetController());
 	GetCharacterMovement()->MaxWalkSpeed = walkingSpeed;
 	ownedPrimaryWeaponAmmo = 180;
 	ownedSecondaryWeaponAmmo = 60;
@@ -73,8 +74,6 @@ void APlayerCharacter::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("M9"));
 	}
 	EquipPrimary();
-
-	playerController = Cast<AFPPlayerController>(GetController());
 	if (playerController != nullptr)
 		playerController->InitInvenotry();
 }
@@ -232,6 +231,10 @@ void APlayerCharacter::SetStanding()
 
 void APlayerCharacter::EquipPrimary()
 {
+	if(playerController->isInventoryOpened)
+	{
+		return;
+	}
 	if (primaryWeapon)
 	{
 		primaryWeapon->SetActorHiddenInGame(false);
@@ -250,6 +253,10 @@ void APlayerCharacter::EquipPrimary()
 
 void APlayerCharacter::EquipSecondary()
 {
+	if (playerController->isInventoryOpened)
+	{
+		return;
+	}
 	if (secondaryWeapon)
 	{
 		secondaryWeapon->SetActorHiddenInGame(false);
@@ -267,6 +274,10 @@ void APlayerCharacter::EquipSecondary()
 
 void APlayerCharacter::FireWeapon()
 {
+	if (playerController->isInventoryOpened)
+	{
+		return;
+	}
 	if (currentActiveGun && currentActiveGun->CanFireWeapon())
 	{
 		FVector start;
@@ -278,6 +289,10 @@ void APlayerCharacter::FireWeapon()
 
 void APlayerCharacter::SetADSWeapon()
 {
+	if (playerController->isInventoryOpened)
+	{
+		return;
+	}
 	if(currentActiveGun)
 		currentActiveGun->SetADS();
 }
@@ -290,6 +305,10 @@ void APlayerCharacter::SetHipfireWeapon()
 
 void APlayerCharacter::ReloadWeapon()
 {
+	if (playerController->isInventoryOpened)
+	{
+		return;
+	}
 	if (currentActiveGun)
 	{
 		int needAmmo = currentActiveGun->maximumMagRounds - currentActiveGun->curMagRounds;
@@ -316,6 +335,10 @@ void APlayerCharacter::ReloadWeapon()
 
 void APlayerCharacter::Interact()
 {
+	if (playerController->isInventoryOpened)
+	{
+		return;
+	}
 	FHitResult hit;
 	FVector start;
 	FRotator dir;

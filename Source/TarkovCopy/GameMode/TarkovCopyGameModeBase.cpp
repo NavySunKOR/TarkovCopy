@@ -5,12 +5,10 @@
 
 void ATarkovCopyGameModeBase :: QuestCompleted(AInteractableObject* questItem)
 {
-
 }
 
 void ATarkovCopyGameModeBase::TryExfil()
 {
-
 }
 
 void ATarkovCopyGameModeBase::CancelExfil()

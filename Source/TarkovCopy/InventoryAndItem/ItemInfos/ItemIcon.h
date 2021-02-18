@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
+#include "Components/Button.h"
 #include "Components/Image.h"
 #include "ItemIcon.generated.h"
 
@@ -11,12 +12,14 @@
  * 
  */
 UCLASS()
-class TARKOVCOPY_API UItemIcon : public UImage
+class TARKOVCOPY_API UItemIcon : public UButton
 {
 	GENERATED_BODY()
 	
 public:
 	UItemInfo* itemInfo;
-	void Init(UItemInfo* pItemInfo);
+	UImage* iconImage;
 
+	void Init(UItemInfo* pItemInfo);
+	
 };
