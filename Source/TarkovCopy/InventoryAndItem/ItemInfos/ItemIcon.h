@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemInfo.h"
-#include "Components/Button.h"
-#include "Components/Image.h"
+#include <Components/Button.h>
+#include <Components/Image.h>
 #include "ItemIcon.generated.h"
+
+class UItemInfo;
+class UInventory;
+class AFPPlayerController;
 
 /**
  * 
@@ -19,7 +22,13 @@ class TARKOVCOPY_API UItemIcon : public UButton
 public:
 	UItemInfo* itemInfo;
 	UImage* iconImage;
+	UInventory* invenRef;
+	AFPPlayerController* controllerRef;
 
-	void Init(UItemInfo* pItemInfo);
+	UFUNCTION()
+	void ActionItem();
+	void UseItem();
+	void DropItem();
+	void Init(UItemInfo* pItemInfo, UInventory* pInven, AFPPlayerController* pController);
 	
 };

@@ -126,7 +126,7 @@ bool APlayerCharacter::PickupItem(UItemInfo* pItemInfo)
 	bool isItemAdded = inventory->AddItemToInventory(pItemInfo);
 	if (isItemAdded && playerController != nullptr)
 	{
-		playerController->AddItem(pItemInfo);
+		playerController->AddItem(pItemInfo,inventory);
 	}
 	return isItemAdded;
 }

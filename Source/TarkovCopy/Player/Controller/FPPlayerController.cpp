@@ -9,7 +9,6 @@
 #include <TimerManager.h>
 #include "TarkovCopy/GameMode/EscapeGameMode.h"
 #include "TarkovCopy/PublicProperty/UMGPublicProperites.h"
-#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemIcon.h"
 #include "FPPlayerController.h"
 
 void AFPPlayerController::BeginPlay()
@@ -108,14 +107,15 @@ void AFPPlayerController::OpenCloseInventory()
 	}
 }
 
-void AFPPlayerController::AddItem(UItemInfo* itemInfo)
+void AFPPlayerController::AddItem(UItemInfo* itemInfo, UInventory* pInvenRef)
 {
 
 	UItemIcon* uiItem = inventory->WidgetTree->ConstructWidget<UItemIcon>(iconWidget);
 
 	UCanvasPanelSlot* panelSlotForItem = Cast<UCanvasPanelSlot>(itemContainer->AddChild(uiItem));
 	uiItem->Slot = panelSlotForItem;
-	uiItem->Init(itemInfo);
+
+	uiItem->Init(itemInfo, pInvenRef, this);
 	UE_LOG(LogTemp, Warning, TEXT("Successfully added"));
 	items.Add(uiItem);
 	UE_LOG(LogTemp, Warning, TEXT("Destructable damned"));

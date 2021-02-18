@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <Blueprint/UserWidget.h>
 #include <Components/TextBlock.h>
 #include <Components/CanvasPanel.h>
-#include "GameFramework/PlayerController.h"
-#include "TarkovCopy/InventoryAndItem/ItemInfos/ItemIcon.h"
+#include <TarkovCopy/InventoryAndItem/ItemInfos/ItemIcon.h>
+#include <TarkovCopy/InventoryAndItem/GameFunctions/Inventory.h>
 #include "FPPlayerController.generated.h"
 
 /**
@@ -67,7 +68,7 @@ public:
 	bool isInventoryOpened;
 	void InitInvenotry();
 	void OpenCloseInventory();
-	void AddItem(UItemInfo* itemInfo);
+	void AddItem(UItemInfo* itemInfo,UInventory* pInvenRef);
 
 	void ShowQuestInfo(FString itemName, float distance);
 	void ShowExfilPoints(FString exfilPointsName, float distance);
